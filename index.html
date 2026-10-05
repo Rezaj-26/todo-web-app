@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meine To-Do-Liste</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="site-header-title">Meine To-Do-Liste</h1>
+  </header>
+
+  <section class="dashboard">
+    <div class="dashboard-progress">
+      <div class="dashboard-progress-ring">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring-track" cx="50" cy="50" r="42"></circle>
+          <circle id="ring-fill" class="ring-fill" cx="50" cy="50" r="42"></circle>
+        </svg>
+        <span id="dashboard-percent" class="dashboard-percent">0%</span>
+      </div>
+      <div>
+        <p class="dashboard-label">Fortschritt</p>
+        <p id="dashboard-summary" class="dashboard-summary">0 von 0 Aufgaben erledigt</p>
+      </div>
+    </div>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <span id="stat-open" class="stat-number">0</span>
+        <span class="stat-label">Offen</span>
+      </div>
+      <div class="stat-card">
+        <span id="stat-done" class="stat-number">0</span>
+        <span class="stat-label">Erledigt</span>
+      </div>
+      <div class="stat-card stat-card-warn">
+        <span id="stat-overdue" class="stat-number">0</span>
+        <span class="stat-label">Überfällig</span>
+      </div>
+    </div>
+
+    <div class="dashboard-categories" id="dashboard-categories"></div>
+
+    <button type="button" id="reminder-toggle" class="btn-secondary reminder-toggle">🔔 Erinnerungen aktivieren</button>
+  </section>
+
+  <div id="reminder-banner" class="reminder-banner" hidden></div>
+
+  <aside class="promo promo-declined declined-bar">
+    <p class="promo-badge">🚫 Das mache ich nicht</p>
+    <ul id="declined-list"></ul>
+    <p id="declined-empty" class="hint-small">Tipp: "NO Sport" eintippen</p>
+  </aside>
+
+  <div class="layout">
+    <main class="app">
+      <div class="app-heading-row">
+        <h2 class="app-heading">Aufgaben</h2>
+        <div class="view-tabs">
+          <button type="button" class="view-tab active" data-view="list">📋 Liste</button>
+          <button type="button" class="view-tab" data-view="calendar">🗓️ Kalender</button>
+        </div>
+      </div>
+
+      <div id="list-view">
+
+      <form id="todo-form">
+        <input type="text" id="todo-input" placeholder="Was gibt's zu tun?" autocomplete="off" required>
+        <button type="submit">Hinzufügen</button>
+
+        <div class="task-meta-row">
+          <select id="todo-category" title="Kategorie">
+            <option value="Arbeit">💼 Arbeit</option>
+            <option value="Studium">📚 Studium</option>
+            <option value="Privat" selected>🏠 Privat</option>
+          </select>
+          <select id="todo-priority" title="Priorität">
+            <option value="Niedrig">Priorität: Niedrig</option>
+            <option value="Mittel" selected>Priorität: Mittel</option>
+            <option value="Hoch">Priorität: Hoch</option>
+          </select>
+          <input type="date" id="todo-due" title="Fälligkeitsdatum">
+        </div>
+      </form>
+
+      <div class="toolbar">
+        <input type="search" id="search-input" placeholder="🔍 Aufgaben durchsuchen…">
+        <select id="filter-category">
+          <option value="all">Alle Kategorien</option>
+          <option value="Arbeit">💼 Arbeit</option>
+          <option value="Studium">📚 Studium</option>
+          <option value="Privat">🏠 Privat</option>
+        </select>
+        <select id="filter-priority">
+          <option value="all">Alle Prioritäten</option>
+          <option value="Niedrig">Niedrig</option>
+          <option value="Mittel">Mittel</option>
+          <option value="Hoch">Hoch</option>
+        </select>
+        <select id="sort-select">
+          <option value="created">Neueste zuerst</option>
+          <option value="priority">Nach Priorität</option>
+          <option value="due">Nach Fälligkeit</option>
+          <option value="alpha">Alphabetisch</option>
+        </select>
+      </div>
+
+      <div id="suggestions">
+        <button type="button" class="suggestion" data-text="Lernen">Lernen</button>
+        <button type="button" class="suggestion" data-text="Sport">Sport</button>
+        <button type="button" class="suggestion" data-text="Schwimmen gehen">Schwimmen</button>
+        <button type="button" class="suggestion" data-text="Haushaltsarbeit erledigen">Haushalt</button>
+        <button type="button" class="suggestion" data-text="Spazieren gehen">Spazieren</button>
+        <button type="button" class="suggestion" data-text="Mehr über Claude erfahren">Claude lernen</button>
+      </div>
+
+      <ul id="todo-list"></ul>
+
+      <p id="empty-hint">Noch keine Aufgaben – leg los!</p>
+
+      </div>
+
+      <div id="calendar-view" hidden>
+        <div class="calendar-nav">
+          <button type="button" id="cal-prev" class="btn-secondary">←</button>
+          <span id="cal-month-label" class="calendar-month-label"></span>
+          <button type="button" id="cal-next" class="btn-secondary">→</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+        </div>
+
+        <div id="calendar-grid" class="calendar-grid"></div>
+
+        <div id="calendar-day-detail" class="calendar-day-detail" hidden>
+          <h3 id="calendar-day-title"></h3>
+          <ul id="calendar-day-list"></ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p class="footer-note">Built by Reza Jafari · 2026</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
